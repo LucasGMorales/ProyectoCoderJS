@@ -1,17 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alimentos Omega</title>
-</head>
-<body>
-    <h1>Alimentos Omega</h1>
-    <h2>Tu Carrito:</h2>
-    <h3>ID ------- Nombre ----- Precio </h3>
-    <h4>Total a pagar:</h4>
 
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
+    <title>Clase 10</title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1 class="text-center">Alimentos Omega</h1>
+            <!--  <section>
+          <input type="submit" value="Dark Mode" class="btn" />
+        </section> -->
+        </header>
+        <section>
+            <h3>Suscribete</h3>
+            <h4>Para recibir nuestras mejores ofertas!</h4>
+        </section>
+        <hr>
+        <main>
+            <!-- Filtro max -->
+            <section>
+                <input type="number" value="" placeholder="Ingrese valor maximo" id="PrecioMax">
+                <input type="submit" value="Filtrar" class="btn btn-success" id="btnFiltrar">
+                <button class="btn btn-danger" id="btnLimpiarFiltro">x</button>
+            </section>
+            <hr>
+            <section id="misprods" class="row">
+                <!-- Productos -->
+            </section>
+            <section>
+                <h4>Tu carrito:</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablabody">
+                        <!-- Carrito -->
+                    </tbody>
+                </table>
+                <h4 id="total">Total a pagar $:</h4>
+            </section>
+            <section>
+                <button class='btn btn-success' id="finalizar">Finalizar Compra</button>
+                <button class='btn btn-danger' id="vaciar">Vaciar carrito</button>
+            </section>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../javascript/productos.js"></script>
     <script src="../javascript/logica.js"></script>
 </body>
+
 </html>
