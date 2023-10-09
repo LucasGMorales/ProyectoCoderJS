@@ -1,9 +1,3 @@
-console.table(productos);
-
-let hoy = new Date().getDay();
-const dias = ["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"]
-alert(`Feliz ${dias[hoy]}! el peor dia de la semana ¬¬`);
-
 let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 console.log(carrito);
 
@@ -12,62 +6,86 @@ const contenedorProds = document.getElementById('misprods');
 const tablaBody = document.getElementById('tablabody');
 const btnFinalizar = document.getElementById('finalizar');
 const btnVaciar = document.getElementById('vaciar');
+const carritoImg = document.getElementById('carrito-img');
 
-function dibujarTabla() {
-    for (const prod of carrito) {
-        tablaBody.innerHTML += `
-        <tr>
-            <td>${prod.id}</td>
-            <td>${prod.nombre}</td>
-            <td>${prod.precio}</td>
-        </tr>
-        `;
+const indicadorCarrito = document.createElement('div'); // buruja que indica los elementos en el carrito (no funciona)
+
+indicadorCarrito.id = 'carrito-indicador';
+
+carritoImg.appendChild(indicadorCarrito); // buruja que indica los elementos en el carrito (no funciona)
+let productos = [];
+
+
+
+// Función para actualizar el indicador de cantidad en el carrito, no logre que funcione, tengo un error con el css que no pude encontrar
+function actualizarIndicador() {
+    if (carrito.length > 0) {
+        indicadorCarrito.style.display = 'block'; 
+        indicadorCarrito.textContent = carrito.length; 
+    } else {
+        indicadorCarrito.style.display = 'none'; 
     }
-    
-    const subTotal = carrito.reduce((acumulador, prod) => acumulador + prod.precio, 0);
-    console.log('Subtotal $' + subTotal);
-    document.getElementById('total').innerText = 'Total a pagar $:' + subTotal;
 }
 
+// Función de Fetch para cargar los datos desde "productos.json" (local)
+fetch('../json/productos.json')
+    .then((response) => response.json())
+    .then((data) => {
+        productos = data;
+        renderizarProds(productos);
+    })
+    .catch((error) => {
+        console.error('Error al cargar los datos:', error);
+    });
 
-if (carrito.length != 0) {
-    dibujarTabla();
-}
-
-//DOM
+// DOM
 function renderizarProds(listaProds) {
     contenedorProds.innerHTML = '';
     for (const prod of listaProds) {
         contenedorProds.innerHTML += `
             <div class="card" style="width: 18rem;">
                 <img class="card-img-top" src=${prod.foto} alt=${prod.nombre}/>
-                    <div class="card-body">
-                        <h5 class="card-title">${prod.nombre}</h5>
-                        <p class="card-text">$ ${prod.precio}</p>
-                        <button id=${prod.id} class="btn btn-primary compra">Comprar</button>
-                    </div>
+                <div class="card-body">
+                    <h5 class="card-title">${prod.nombre}</h5>
+                    <p class="card-text">$ ${prod.precio}</p>
+                    <button id=${prod.id} class="btn btn-primary compra">Comprar</button>
+                </div>
             </div>
         `;
     }
 
-    //eventos
+    const carritoNav = document.getElementById("carritonav");
+    // tabla carrito
+    function dibujarTabla() {
+        for (const prod of carrito) {
+            tablaBody.innerHTML += `
+                <tr>
+                    <td>${prod.id}</td>
+                    <td>${prod.nombre}</td>
+                    <td>${prod.precio}</td>
+                </tr>
+            `;
+        }
+
+        const subTotal = carrito.reduce((acumulador, prod) => acumulador + prod.precio, 0);
+        console.log('Subtotal $' + subTotal);
+        document.getElementById('total').innerText = 'Total a pagar $:' + subTotal;
+    }
+
+    if (carrito.length != 0) {
+        dibujarTabla();
+    }
+
+    // Eventos
     let botones = document.getElementsByClassName('compra');
     for (const boton of botones) {
-        //opcion 1 - addEventListener
         boton.addEventListener('click', () => {
-            console.log('Hiciste click en el boton cuyo id es ' + boton.id);
             const prodACarro = listaProds.find((producto) => producto.id == boton.id);
             console.log(prodACarro);
-            //cargar producto encontrado al carro
             agregarAlCarrito(prodACarro);
         });
-
-        //opcion 2
-
     }
 }
-
-renderizarProds(productos);
 
 function agregarAlCarrito(producto) {
     carrito.push(producto);
@@ -77,39 +95,42 @@ function agregarAlCarrito(producto) {
         `Agregaste "${producto.nombre}" correctamente!`,
         'Suma más productos o finaliza la compra en el pie de página!',
         'success'
-    )
-    //agregar el producto a la tabla
+    );
 
+    // Agregar el producto a la tabla
     tablaBody.innerHTML += `
         <tr>
-            <td>${producto.id}</td>
+            <td><img src="${producto.foto}" alt="${producto.nombre}" width="50" height="50"></td>
             <td>${producto.nombre}</td>
             <td>${producto.precio}</td>
         </tr>
     `;
-    //calcular el total gastado hasta el momento
+
+    // Calcular el total gastado hasta el momento
     const subTotal = carrito.reduce((acumulador, prod) => acumulador + prod.precio, 0);
     console.log('Subtotal $' + subTotal);
     document.getElementById('total').innerText = 'Total a pagar $:' + subTotal;
-    //localStorage
+
+    // Almacenar en localStorage
     localStorage.setItem('carrito', JSON.stringify(carrito));
+
+    actualizarIndicador(); // buruja que indica los elementos en el carrito (no funciona)
 }
 
 btnFinalizar.onclick = () => {
     if (carrito.length === 0) {
         Swal.fire({
-            title: 'No podes comprar la nada misma',
+            title: 'No puedes comprar la nada misma',
             imageUrl: 'https://memeprod.sgp1.digitaloceanspaces.com/user-maker-thumbnail/042d89bdfeb4267b666e01aba51d5629.gif',
             imageWidth: 400,
             imageHeight: 330,
             imageAlt: 'Custom image',
         });
-    ;    
     } else {
         const subTotal = carrito.reduce((acumulador, prod) => acumulador + prod.precio, 0);
         Swal.fire({
-            title: 'Gracias por tu compra !!!',
-            text: `Recibiras tu pedido en 48hs... creo. Debes abonarle al repartidor $${subTotal}`,
+            title: '¡Gracias por tu compra!',
+            text: `Recibirás tu pedido en 48 horas. Debes abonarle al repartidor $${subTotal}`,
             imageUrl: 'https://media.tenor.com/aoU9vq-JavUAAAAM/driver-homer.gif',
             imageWidth: 400,
             imageHeight: 330,
@@ -119,9 +140,11 @@ btnFinalizar.onclick = () => {
         tablaBody.innerHTML = '';
         document.getElementById('total').innerText = 'Total a pagar $:';
         localStorage.removeItem('carrito');
+
+        
+        actualizarIndicador(); // buruja que indica los elementos en el carrito (no funciona)
     }
 }
-
 
 btnVaciar.onclick = () => {
     carrito = [];
@@ -129,41 +152,49 @@ btnVaciar.onclick = () => {
     document.getElementById('total').innerText = 'Total a pagar $:';
     localStorage.removeItem('carrito');
     Swal.fire(
-        `Espero que lo llenes rapido... estamos con problemas financieros`,
+        `Espero que lo llenes rápido... estamos con problemas financieros`,
     )
+    
 
+    actualizarIndicador(); // buruja que indica los elementos en el carrito (no funciona)
 }
 
-// filtro precios max
+// Filtro precios máximos
 
 const btnFiltrar = document.getElementById('btnFiltrar');
 const btnLimpiarFiltro = document.getElementById('btnLimpiarFiltro');
 const inputPrecioMax = document.getElementById('PrecioMax');
 
+inputPrecioMax.addEventListener('keydown', (event) => {  //Event listener para poder apretar enter en el filtrado, para los ansiosos como yo ;)
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        btnFiltrar.click();
+    }
+});
 btnFiltrar.addEventListener('click', () => {
     const precioMaxInput = inputPrecioMax.value;
 
     if (precioMaxInput === '') {
         Swal.fire({
-            text: 'ingresa algo en el input, genio',
+            text: 'Ingresa algo en el input, genio',
             imageUrl: 'https://i.pinimg.com/1200x/51/a9/94/51a99455fc929e4a07b72d1f86ca8fe0.jpg',
             imageWidth: 400,
             imageHeight: 200,
             imageAlt: 'Custom image',
-        })
+        });
         return;
     }
 
     const precioMax = parseInt(precioMaxInput);
 
-    const productosCumplenFiltro = productos.some(producto => producto.precio <= precioMax);  //no recuerdo haber visto el some en clase, pero lo encontre en esta pagina de metodos: https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+    const productosCumplenFiltro = productos.some(producto => producto.precio <= precioMax);
 
     if (!productosCumplenFiltro) {
         Swal.fire({
             icon: 'error',
             title: 'Error!',
-            text: 'Tan barato no vendemos, esto es argentina rey',
-        })
+            text: 'Tan barato no vendemos, esto es Argentina, rey',
+        });
         return;
     }
 

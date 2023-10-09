@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "nombre": "Harina integral x1kg",
+        "foto": "https://paladear.com.ar/wp-content/uploads/2019/07/harina-integral.jpg",
+        "precio": 900
+    },
+    {
+        "id": 2,
+        "nombre": "Semillas de Chia x500gr",
+        "foto": "https://www.finedininglovers.com/es/sites/g/files/xknfdk1706/files/2021-08/semillas-de-chía©iStock.jpg",
+        "precio": 1000
+    },
+    {
+        "id": 3,
+        "nombre": "Fideos integrales x250gr",
+        "foto": "https://static.abc.es/media/bienestar/2021/02/11/pasta-integral-kUIE--1200x630@abc.jpg",
+        "precio": 600
+    },
+    {
+        "id": 4,
+        "nombre": "Frutos secos x500gr",
+        "foto": "https://images.ecestaticos.com/6a9HPGNIgXUu7ROOp81TuDce9WY=/0x107:2117x1300/1200x1200/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2Faa8%2F26e%2F5f1%2Faa826e5f1d9b1c2efa3faf8b58688558.jpg",
+        "precio": 800
+    },
+    {
+        "id": 5,
+        "nombre": "Pasas de uva x500gr",
+        "foto": "https://drcormillot.com.ar/wp-content/uploads/2018/12/NOTA-008-FOTO.jpg",
+        "precio": 700
+    }
+]

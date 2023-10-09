@@ -1,0 +1,21 @@
+header{
+    margin-bottom: 1rem;
+}
+.carrito-img {
+    position: relative;
+}
+
+.carrito-indicador {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 14px;
+    display: none;
+}
